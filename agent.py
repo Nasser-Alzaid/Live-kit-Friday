@@ -1,35 +1,33 @@
 from dotenv import load_dotenv
+
 from livekit import agents
 from livekit.agents import AgentSession, Agent, RoomInputOptions
 from livekit.plugins import (
-   
     noise_cancellation,
 )
-
 from livekit.plugins import google
 from prompts import AGENT_INSTRUCTION, SESSION_INSTRUCTION
 from tools import get_weather, search_web, send_email
-
 load_dotenv()
 
 
 class Assistant(Agent):
     def __init__(self) -> None:
-        super().__init__(instructions=AGENT_INSTRUCTION,
-                         
-                llm=google.beta.realtime.RealtimeModel(
-                voice="Aoede",
-                temperature=0.8,
+        super().__init__(
+            instructions=AGENT_INSTRUCTION,
+            llm=google.beta.realtime.RealtimeModel(
+            voice="Aoede",
+            temperature=0.8,
         ),
-                tools=[
-                    get_weather,
-                    search_web,
-                    send_email,
-                    
-                ],
-                         
-                         )
- 
+            tools=[
+                get_weather,
+                search_web,
+                send_email
+            ],
+
+        )
+        
+
 
 async def entrypoint(ctx: agents.JobContext):
     session = AgentSession(
